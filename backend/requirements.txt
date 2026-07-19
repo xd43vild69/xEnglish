@@ -1,0 +1,30 @@
+# --- API ---
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.4
+pydantic-settings==2.7.1
+python-multipart==0.0.20
+
+# --- DB ---
+SQLAlchemy==2.0.36
+aiosqlite==0.20.0
+greenlet==3.1.1
+
+# --- Audio ---
+soundfile==0.12.1
+numpy==2.2.1
+
+# --- ASR (Whisper) ---
+# GPU: instala CTranslate2 con soporte CUDA. faster-whisper lo usa por debajo.
+faster-whisper==1.1.0
+
+# --- LLM local ---
+# Reemplaza por la rueda con CUDA:  CMAKE_ARGS="-DGGML_CUDA=on" pip install llama-cpp-python
+llama-cpp-python==0.3.5
+
+# --- TTS ---
+# Piper (recomendado, CPU). Instala el binario/paquete segun tu distro:
+#   pip install piper-tts
+# Alternativa GPU (voz mas natural / clonacion):
+#   pip install coqui-tts
+piper-tts==1.2.0
