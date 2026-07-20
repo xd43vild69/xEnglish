@@ -10,6 +10,7 @@ from fastapi import (
     Form,
     HTTPException,
     Query,
+    Response,
     UploadFile,
     status,
 )
@@ -211,6 +212,7 @@ async def get_phrase_audio(
 @router.delete(
     "/phrases/{phrase_id}",
     status_code=status.HTTP_204_NO_CONTENT,
+    response_model=None,
     dependencies=[Depends(require_api_key)],
 )
 async def delete_phrase(
