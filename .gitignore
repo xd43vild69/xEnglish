@@ -1,0 +1,36 @@
+# --- macOS System Files ---
+.DS_Store
+.AppleDouble
+._*
+.LSOverride
+
+# --- IDEs / Editors ---
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+env/
+venv/
+ENV/
+
+# --- Local configs and DBs ---
+.env
+.env.local
+local.properties
+data/
+data_test/
+
+# --- Audio & Models ---
+/backend/models/
+*.gguf
+*.onnx
+*.onnx.json
+*.wav

@@ -4,6 +4,6 @@ __pycache__/
 .env
 data/
 data_test/
-models/
+/models/
 *.gguf
 *.onnx

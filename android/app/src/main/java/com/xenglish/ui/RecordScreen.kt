@@ -1,12 +1,17 @@
 package com.xenglish.ui
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Mic
@@ -14,7 +19,6 @@ import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -23,6 +27,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -45,16 +52,51 @@ fun RecordScreen(viewModel: RecordViewModel = hiltViewModel()) {
             style = MaterialTheme.typography.bodyMedium,
         )
 
-        // Boton push-to-talk
-        FloatingActionButton(
-            onClick = {},
-            modifier = Modifier.size(96.dp),
-        ) {
-            Icon(Icons.Filled.Mic, contentDescription = "Grabar", modifier = Modifier.size(48.dp))
+        // Visual feedback state
+        val isRecording = state is RecordUiState.Recording
+        val scale by animateFloatAsState(
+            targetValue = if (isRecording) 1.2f else 1.0f,
+            label = "scale"
+        )
+        val buttonColor = if (isRecording) {
+            MaterialTheme.colorScheme.error
+        } else {
+            MaterialTheme.colorScheme.primaryContainer
         }
-        // Nota: engancha press/release con pointerInput -> startRecording()/stopAndAnalyze()
-        Button(onClick = { viewModel.startRecording() }) { Text("Iniciar grabacion") }
-        Button(onClick = { viewModel.stopAndAnalyze() }) { Text("Detener y analizar") }
+        val iconColor = if (isRecording) {
+            MaterialTheme.colorScheme.onError
+        } else {
+            MaterialTheme.colorScheme.onPrimaryContainer
+        }
+
+        // Boton push-to-talk interactivo
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .size(96.dp)
+                .scale(scale)
+                .clip(CircleShape)
+                .background(buttonColor)
+                .pointerInput(Unit) {
+                    detectTapGestures(
+                        onPress = {
+                            try {
+                                viewModel.startRecording()
+                                awaitRelease()
+                            } finally {
+                                viewModel.stopAndAnalyze()
+                            }
+                        }
+                    )
+                }
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Mic,
+                contentDescription = "Grabar (Mantener pulsado)",
+                tint = iconColor,
+                modifier = Modifier.size(48.dp)
+            )
+        }
 
         when (val s = state) {
             RecordUiState.Idle -> Unit

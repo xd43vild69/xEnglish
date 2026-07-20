@@ -10,7 +10,7 @@ import wave
 os.environ["XENGLISH_SKIP_MODELS"] = "1"
 os.environ["XENGLISH_API_KEY"] = "test-key"
 os.environ["XENGLISH_DATA_DIR"] = "./data_test"
-os.environ["XENGLISH_DB_URL"] = "sqlite+aiosqlite:///./data_test/test.db"
+os.environ["XENGLISH_DB_URL"] = "sqlite+aiosqlite:///./data_test/test.db?nolock=1"
 
 import numpy as np  # noqa: E402
 
