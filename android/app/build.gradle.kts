@@ -17,8 +17,11 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "0.1.0"
-        // URL del backend. Cambia por la IP de tu servidor Linux.
-        buildConfigField("String", "DEFAULT_BASE_URL", "\"http://10.0.2.2:8000/\"")
+        // URL del backend. localhost = via `adb reverse tcp:8000 tcp:8000` (celular -> Mac).
+        // La Mac debe exponer el 8000 (tunel SSH al Linux con GPU, o backend local).
+        buildConfigField("String", "DEFAULT_BASE_URL", "\"http://localhost:8000/\"")
+        // API key que se envia en X-API-Key. Debe coincidir con XENGLISH_API_KEY del backend.
+        buildConfigField("String", "DEFAULT_API_KEY", "\"test-key\"")
     }
 
     buildTypes {
@@ -58,7 +61,7 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
-    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
+    implementation("com.squareup.retrofit2:converter-kotlinx-serialization:2.11.0")
 
     // Media3 / ExoPlayer para reproducir el audio corregido
     implementation("androidx.media3:media3-exoplayer:1.5.1")
