@@ -19,6 +19,7 @@ class AppConfig(private val context: Context) {
     val baseUrl: Flow<String> = context.dataStore.data.map {
         it[baseUrlKey] ?: BuildConfig.DEFAULT_BASE_URL
     }
+
     val apiKey: Flow<String> = context.dataStore.data.map { it[apiKeyKey] ?: BuildConfig.DEFAULT_API_KEY }
 
     suspend fun setBaseUrl(value: String) =
